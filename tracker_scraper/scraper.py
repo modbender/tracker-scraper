@@ -3,10 +3,8 @@ import socket
 import random
 import struct
 import bencode
-# from bcode import bdecode
-from urllib.request import urlopen
+import requests
 from urllib.parse import urlparse, urlunsplit, urlencode
-
 
 def scrape(tracker, hashes):
     """
@@ -74,11 +72,10 @@ def scrape_http(parsed_tracker, hashes):
     qs = urlencode(qs)
     pt = parsed_tracker
     url = urlunsplit((pt.scheme, pt.netloc, pt.path, qs, pt.fragment))
-    handle = urlopen(url)
-    if handle.getcode() is not 200:
-        raise RuntimeError("%s status code returned" % handle.getcode())
-    decoded = handle.read().decode("utf-8")
-    print(decoded)
+    handle = requests.get(url)
+    if handle.status_code != 200:
+        raise RuntimeError("%s status code returned" % handle.status_code)
+    decoded = bencode.bdecode(handle.content)
     ret = {}
     for hash, stats in decoded['files'].iteritems():
         nice_hash = binascii.b2a_hex(hash)
@@ -167,29 +164,3 @@ def udp_parse_scrape_response(buf, sent_transaction_id, hashes):
 
 def udp_get_transaction_id():
     return int(random.randrange(0, 255))
-
-
-s = scrape('http://anidex.moe:6969/announce',
-           ["792740cf51ec33b553f534d3e46139ad41e077d9"])
-print(s)
-
-
-trackers = [
-    'udp://tracker.uw0.xyz:6969',
-    'udp://tracker.zer0day.to:1337/announce',
-    'udp://tracker.leechers-paradise.org:6969',
-    'udp://explodie.org:6969',
-    'udp://tracker.opentrackr.org:1337',
-    'udp://tracker.internetwarriors.net:1337/announce',
-    'http://mgtracker.org:6969/announce',
-    'udp://ipv6.leechers-paradise.org:6969/announce',
-    'http://anidex.moe:6969/announce',
-    'http://tracker.gbitt.info/announce',
-    'udp://tracker.opentrackr.org:1337/announce',
-    'udp://tracker.openbittorrent.com:80',
-    'udp://tracker.internetwarriors.net:1337',
-    'udp://tracker.leechers-paradise.org:6969',
-    'udp://tracker.coppersurfer.tk:6969',
-    'udp://exodus.desync.com:6969',
-    'udp://tracker.empire-js.us:1337',
-]
