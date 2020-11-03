@@ -2,8 +2,8 @@ import binascii
 import socket
 import random
 import struct
-import bencode
 import requests
+import bencodepy
 from urllib.parse import urlparse, urlunsplit, urlencode
 
 def scrape(tracker, hashes):
@@ -75,16 +75,17 @@ def scrape_http(parsed_tracker, hashes):
     handle = requests.get(url)
     if handle.status_code != 200:
         raise RuntimeError("%s status code returned" % handle.status_code)
-    decoded = bencode.bdecode(handle.content)
+    decoded_dict = bencodepy.bdecode(handle.content)
+    decoded = get_decoded_dict(decoded_dict)
+
     ret = {}
-    for hash, stats in decoded['files'].iteritems():
-        nice_hash = binascii.b2a_hex(hash)
+    for hash, stats in decoded['files'].items():
+        nice_hash = binascii.b2a_hex(hash).decode('utf-8')
         s = stats["complete"]
         p = stats["incomplete"]
         c = stats["downloaded"]
         ret[nice_hash] = {"seeds": s, "peers": p, "complete": c}
     return ret
-
 
 def udp_create_connection_request():
     connection_id = 0x41727101980  # default connection id
@@ -164,3 +165,17 @@ def udp_parse_scrape_response(buf, sent_transaction_id, hashes):
 
 def udp_get_transaction_id():
     return int(random.randrange(0, 255))
+
+def get_decoded_dict(d):
+    generated_dict = {}
+    for k, v in d.items():
+        if type(k) == type(b''):
+            try:
+                k = k.decode('utf8')
+            except:
+                pass
+        if type(v) == type({}):
+            generated_dict[k] = get_decoded_dict(v)
+        else:
+            generated_dict[k] = v
+    return generated_dict

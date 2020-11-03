@@ -5,7 +5,7 @@
 
 A simple torrent tracker scraper
 
-**NOTE: Currently not working for http trackers (you can try but all my test cases gave bencode error), works for udp trackers. Working on fixing http tracker scrape, any valid help accepted.**
+**NOTE: scrape for http trackers work after version >= 1.1 of this package**
 
 ## Installation
 `pip install tracker-scraper`

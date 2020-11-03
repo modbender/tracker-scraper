@@ -5,7 +5,7 @@ README = open('README.md').read()
 
 setuptools.setup(
     name='tracker-scraper',
-    version='1.0.1',
+    version='1.1.0',
     url='https://github.com/modbender/tracker-scraper',
     description='A simple torrent tracker scraper',
     long_description=README,
