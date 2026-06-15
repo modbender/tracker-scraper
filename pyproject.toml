@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tracker-scraper"
+version = "1.2.0"
+description = "A simple BitTorrent tracker scraper (UDP + HTTP/HTTPS)"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE.md"]
+authors = [{ name = "Yashas H R", email = "rameshmamathayashas@gmail.com" }]
+keywords = ["torrent", "tracker", "scraper", "bittorrent", "seeds", "peers", "udp"]
+dependencies = [
+    "bencode.py>=4.0.0",
+    "requests>=2.20.0",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Communications :: File Sharing",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet",
+]
+
+[project.urls]
+Homepage = "https://github.com/modbender/tracker-scraper"
+Documentation = "https://modbender.in/tracker-scraper/"
+Repository = "https://github.com/modbender/tracker-scraper"
+Issues = "https://github.com/modbender/tracker-scraper/issues"
+
+[project.scripts]
+tracker-scraper = "tracker_scraper.__main__:main"
+
+[project.optional-dependencies]
+test = ["pytest>=7.0", "bencode.py>=4.0.0", "requests>=2.20.0"]
+
+[tool.setuptools]
+packages = ["tracker_scraper"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

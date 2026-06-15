@@ -1,3 +1,0 @@
-bencode.py
-readme-renderer
-requests
