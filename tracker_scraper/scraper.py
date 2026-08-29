@@ -41,7 +41,7 @@ def scrape(tracker, hashes):
 
 
 def scrape_udp(parsed_tracker, hashes):
-    logger.warning("Scraping UDP: %s for %s hashes" %
+    logger.debug("Scraping UDP: %s for %s hashes" %
           (parsed_tracker.geturl(), len(hashes)))
     if len(hashes) > 74:
         raise RuntimeError(
@@ -66,7 +66,7 @@ def scrape_udp(parsed_tracker, hashes):
 
 
 def scrape_http(parsed_tracker, hashes):
-    logger.warning("Scraping HTTP: %s for %s hashes" %
+    logger.debug("Scraping HTTP: %s for %s hashes" %
           (parsed_tracker.geturl(), len(hashes)))
     qs = []
     for hash in hashes:
